@@ -81,7 +81,7 @@ fastify.get("/token", (req, reply) => {
   const token = fastify.jwt.sign({ HOST: os.hostname() });
   reply.send({ token });
 });
-fastify.get("/mock", async (req, reply) => {
+fastify.get("/datamock", async (req, reply) => {
   try {
     await req.jwtVerify();
     let mock_json = require("./mock-data-1000.json");
@@ -99,8 +99,28 @@ fastify.get("/mock", async (req, reply) => {
     reply.status(e.statusCode).send({ Error: e.message });
   }
 });
+fastify.get("/mock", async (req, reply) => {
+  let mock_json = require("./mock-data-1000.json");
+  reply.send({
+    HOST: os.hostname(),
+    ID: uuidv4(),
+    DATA: mock_json,
+  });
+});
+fastify.get("/mock5mb", async (req, reply) => {
+  let mock_json = require("./mock-data-1000.json");
+  let mock_data = [];
+  for (let i = 0; i < 33; i++) {
+    await mock_data.push(mock_json);
+  }
+  reply.send({
+    HOST: os.hostname(),
+    ID: uuidv4(),
+    DATA: mock_data,
+  });
+});
 
-fastify.get("/mock100", async (req, reply) => {
+fastify.get("/mock15mb", async (req, reply) => {
   let mock_json = require("./mock-data-1000.json");
   let mock_data = [];
   for (let i = 0; i < 100; i++) {
@@ -112,6 +132,7 @@ fastify.get("/mock100", async (req, reply) => {
     DATA: mock_data,
   });
 });
+
 
 fastify.listen({ port: 3000, host: "0.0.0.0" }, (err) => {
   if (err) throw err;

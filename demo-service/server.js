@@ -17,6 +17,36 @@ fastify.get("/10", (request, reply) => {
 
   setTimeout(timeoutFunction, 100);
 });
+
+fastify.get("/hello50ms", (request, reply) => {
+  const timeoutFunction = () => {
+    reply.send({
+      ID: uuidv4(),
+      message: "Hello World",
+    });
+  };
+
+  setTimeout(timeoutFunction, 50);
+});
+
+fastify.get("/hello10ms", (request, reply) => {
+  const timeoutFunction = () => {
+    reply.send({
+      ID: uuidv4(),
+      message: "Hello World",
+    });
+  };
+
+  setTimeout(timeoutFunction, 10);
+});
+
+fastify.get("/hello", (request, reply) => {
+  reply.send({
+    ID: uuidv4(),
+    message: "Hello World",
+  });
+});
+
 fastify.get("/", (request, reply) => {
   reply.send({
     HOST: os.hostname(),

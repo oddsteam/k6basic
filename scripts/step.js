@@ -5,7 +5,7 @@ export default async function () {
   let token = "";
 
   group("GET Token", function () {
-    let res = http.get("http://app-srv01:3000/token");
+    let res = http.get("http://host.docker.internal:3001/token");
     //console.log(res.body);
     let j = JSON.parse(res.body);
     token = j.token;
@@ -15,7 +15,7 @@ export default async function () {
     });
   });
   group("Load MockData", function () {
-    let res = http.get("http://app-srv01:3000/datamock", {
+    let res = http.get("http://host.docker.internal:3001/datamock", {
       headers: { Authorization: "Bearer " + token },
     });
 

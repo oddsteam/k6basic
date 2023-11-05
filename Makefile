@@ -20,7 +20,7 @@ start-service:
 k6-csv:
 	docker run -v ./report:/report --rm -i \
 	grafana/k6 run  --out csv=/report/results.csv  - < ./scripts/step.js
-	
+
 k6:
 	docker run \
 	-v ./scripts:/scripts \
@@ -46,6 +46,23 @@ xk6-lb:
 	-it --rm ghcr.io/grafana/xk6-dashboard:latest run \
 	--out dashboard=report=/report/test-reportlb.$$(date +%Y%m%d%H%M%S).html \
 	/scripts/steplb.js
+
+xk6test:
+	docker run \
+	-v ./scripts:/scripts \
+	-v ./report:/report \
+	-p 5665:5665  \
+	-it --rm ghcr.io/grafana/xk6-dashboard:latest run \
+	--out dashboard=report=/report/$(TEST)-report-$$(date +%Y%m%d%H%M%S).html \
+	/scripts/$(TEST).js
+
+k6test:
+	docker run \
+	-v ./scripts:/scripts \
+	-v ./report:/report \
+	-p 5665:5665  \
+	-it --rm grafana/k6  run \
+	/scripts/$(TEST).js
 
 
 

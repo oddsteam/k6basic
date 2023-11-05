@@ -7,24 +7,24 @@ networks:
 
 services:
 
-  k6:
-    image: grafana/k6:latest
-    stdin_open: true # docker run -i
-    tty: true   
-    networks:
-      - k6
-    ports:
-      - "6565:6565"
-    volumes:
-      - ./scripts:/scripts
-    deploy:
-        resources:
-            limits:
-              cpus: '1'
-              memory: 500M
-            reservations:
-              cpus: '0.20'
-              memory: 15M
+  # k6:
+  #   image: grafana/k6:latest
+  #   stdin_open: true # docker run -i
+  #   tty: true   
+  #   networks:
+  #     - k6
+  #   ports:
+  #     - "6565:6565"
+  #   volumes:
+  #     - ./scripts:/scripts
+  #   deploy:
+  #       resources:
+  #           limits:
+  #             cpus: '1'
+  #             memory: 500M
+  #           reservations:
+  #             cpus: '0.20'
+  #             memory: 15M
 
   srv01:
     container_name: app-srv01
@@ -78,8 +78,13 @@ services:
   loadbalancer:
     container_name: app-loadbalancer
     image: chankx/demo-nginxlb:latest
+    depends_on:
+      - srv01
+      - srv02
+      - srv03
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./report:/usr/share/nginx/html/report
     networks:
       - k6
     ports:

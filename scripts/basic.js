@@ -10,7 +10,7 @@ export const options = {
 export default function () {
   //http.get('https://test.k6.io');
   //sleep(1);
-  http.get('http://host.docker.internal:3001/mock5mb');
+  let res = http.get('http://host.docker.internal:3001/mock5mb');
   check(res, {
     "is status 200": (r) => r.status === 200,
   });

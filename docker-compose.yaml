@@ -26,6 +26,22 @@ services:
   #             cpus: '0.20'
   #             memory: 15M
 
+  httpbin:
+    container_name: httpbin
+    image: kennethreitz/httpbin
+    networks:
+      - k6
+    restart: always
+    ports:
+      - "8801:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 160m
+        reservations:
+          cpus: '0.20'
+          memory: 15M
   srv01:
     container_name: app-srv01
     image: chankx/demo-loadtest-app:latest

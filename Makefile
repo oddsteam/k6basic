@@ -53,8 +53,8 @@ xk6test:
 	-v ./report:/report \
 	-p 5665:5665  \
 	-it --rm ghcr.io/grafana/xk6-dashboard:latest run \
-	--out dashboard=report=/report/$(TEST)-report-$$(date +%Y%m%d%H%M%S).html \
-	/scripts/$(TEST).js
+	--out dashboard=report=/report/$(SCRIPT)-report-$$(date +%Y%m%d%H%M%S).html \
+	/scripts/$(SCRIPT).js
 
 k6test:
 	docker run \
@@ -62,7 +62,7 @@ k6test:
 	-v ./report:/report \
 	-p 5665:5665  \
 	-it --rm grafana/k6  run \
-	/scripts/$(TEST).js
+	/scripts/$(SCRIPT).js
 
 
 

@@ -54,7 +54,7 @@ services:
       resources:
         limits:
           cpus: '0.5'
-          memory: 50m
+          memory: 150m
         reservations:
           cpus: '0.20'
           memory: 15M
@@ -70,7 +70,7 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 500M
+          memory: 150M
         reservations:
           cpus: '0.20'
           memory: 15M
@@ -86,7 +86,49 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 500M
+          memory: 150M
+        reservations:
+          cpus: '0.20'
+          memory: 15M
+  srv04:
+    container_name: app-srv04
+    image: chankx/demo-loadtest-app:latest
+    networks:
+      - k6
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 150M
+        reservations:
+          cpus: '0.20'
+          memory: 15M
+  srv05:
+    container_name: app-srv05
+    image: chankx/demo-loadtest-app:latest
+    networks:
+      - k6
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 100M
+        reservations:
+          cpus: '0.20'
+          memory: 15M
+  srv06:
+    container_name: app-srv06
+    image: chankx/demo-loadtest-app:latest
+    networks:
+      - k6
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 100M
         reservations:
           cpus: '0.20'
           memory: 15M
@@ -98,6 +140,9 @@ services:
       - srv01
       - srv02
       - srv03
+      - srv04
+      - srv05
+      - srv06
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./report:/usr/share/nginx/html/report

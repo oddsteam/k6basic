@@ -2,12 +2,15 @@ import http from "k6/http";
 import { check, group, sleep } from "k6";
 
 export const options = {
-    stages: [
-      { duration: '10s', target: 1 },
-   //   { duration: '1m', target: 5 },
-  //    { duration: '20s', target: 0 },
-    ],
-  };
+  stages: [
+    { duration: '10s', target: 2 },
+    { duration: '10s', target: 4 },
+    { duration: '10s', target: 6 },
+    { duration: '10s', target: 8 },
+    { duration: '10s', target: 6 },
+    { duration: '10s', target: 0 },
+  ],
+};
 
 export default async function () {
   let token = "";
@@ -28,7 +31,7 @@ export default async function () {
     });
   });
   group("Load MockData", function () {
-    let res = http.get("http://host.docker.internal:3001/datamock", {
+    let res = http.get("http://host.docker.internal:3001/mock5mb", {
       headers: { Authorization: "Bearer " + token },
     });
 

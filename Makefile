@@ -15,7 +15,7 @@ srv1:
 	docker compose down srv01 && docker compose up -d srv01
 
 start-service:
-	docker compose up -d srv01 srv02 srv03 loadbalancer
+	docker compose up -d srv01 srv02 srv03 srv04 srv05 srv06 
 
 k6-csv:
 	docker run -v ./report:/report --rm -i \

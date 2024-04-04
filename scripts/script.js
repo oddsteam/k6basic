@@ -54,6 +54,6 @@ export const options = {
 // about authoring k6 scripts.
 //
 export default function() {
-  http.get('https://test.k6.io');
+  http.get('https://test-api.k6.io/');
   sleep(1);
 }

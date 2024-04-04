@@ -18,14 +18,14 @@ services:
     ports:
       - "6565:6565"
       - "5665:5665"
-    deploy:
-        resources:
-            limits:
-              cpus: '1'
-              memory: 500M
-            reservations:
-              cpus: '0.20'
-              memory: 15M
+    # deploy:
+    #     resources:
+    #         limits:
+    #           cpus: '1'
+    #           memory: 500M
+    #         reservations:
+    #           cpus: '0.20'
+    #           memory: 15M
 
   k6-test-api:
     image: chankx/k6api
@@ -40,6 +40,14 @@ services:
       - "8000:8000"
     environment:
       - ENVIRONMENT_NAME=dev
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 300m
+        reservations:
+          cpus: '0.20'
+          memory: 250M
 
   httpbin:
     container_name: httpbin

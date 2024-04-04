@@ -13,6 +13,9 @@ services:
     networks:
       - k6
     working_dir: /app
+    environment:
+      - K6_WEB_DASHBOARD=true
+      - K6_WEB_DASHBOARD_EXPORT=html-report.html
     volumes:
       - ./scripts:/app
     ports:

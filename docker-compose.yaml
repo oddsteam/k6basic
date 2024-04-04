@@ -6,25 +6,42 @@ networks:
 
 
 services:
+  
+  k6:
+    image: grafana/k6:latest
+    tty: true   
+    networks:
+      - k6
+    working_dir: /app
+    environment:
+      - K6_WEB_DASHBOARD_EXPORT=report-$$(date +%Y%m%d%H%M%S).html
+    volumes:
+      - ./scripts:/app
+    ports:
+      - "6565:6565"
+      - "5665:5665"
+    deploy:
+        resources:
+            limits:
+              cpus: '1'
+              memory: 500M
+            reservations:
+              cpus: '0.20'
+              memory: 15M
 
-  # k6:
-  #   image: grafana/k6:latest
-  #   stdin_open: true # docker run -i
-  #   tty: true   
-  #   networks:
-  #     - k6
-  #   ports:
-  #     - "6565:6565"
-  #   volumes:
-  #     - ./scripts:/scripts
-  #   deploy:
-  #       resources:
-  #           limits:
-  #             cpus: '1'
-  #             memory: 500M
-  #           reservations:
-  #             cpus: '0.20'
-  #             memory: 15M
+  k6-test-api:
+    image: chankx/k6api
+    command: sh -c "python project/manage.py makemigrations && python project/manage.py migrate && python project/manage.py loaddata project/fixtures/initial.json && python project/manage.py runserver 0.0.0.0:8000"
+    container_name: k6testapi
+    working_dir: /srv/test-api.k6.io
+    volumes:
+      - ./test-api.k6.io:/srv/test-api.k6.io
+    networks:
+      - k6
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT_NAME=dev
 
   httpbin:
     container_name: httpbin
@@ -58,95 +75,3 @@ services:
         reservations:
           cpus: '0.20'
           memory: 15M
-  srv02:
-    container_name: app-srv02
-    image: chankx/demo-loadtest-app:latest
-    networks:
-      - k6
-    restart: always
-    ports:
-      - "3002:3000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 150M
-        reservations:
-          cpus: '0.20'
-          memory: 15M
-  srv03:
-    container_name: app-srv03
-    image: chankx/demo-loadtest-app:latest
-    networks:
-      - k6
-    restart: always
-    ports:
-      - "3003:3000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 150M
-        reservations:
-          cpus: '0.20'
-          memory: 15M
-  srv04:
-    container_name: app-srv04
-    image: chankx/demo-loadtest-app:latest
-    networks:
-      - k6
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 150M
-        reservations:
-          cpus: '0.20'
-          memory: 15M
-  srv05:
-    container_name: app-srv05
-    image: chankx/demo-loadtest-app:latest
-    networks:
-      - k6
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 100M
-        reservations:
-          cpus: '0.20'
-          memory: 15M
-  srv06:
-    container_name: app-srv06
-    image: chankx/demo-loadtest-app:latest
-    networks:
-      - k6
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 100M
-        reservations:
-          cpus: '0.20'
-          memory: 15M
-
-  loadbalancer:
-    container_name: app-loadbalancer
-    image: chankx/demo-nginxlb:latest
-    depends_on:
-      - srv01
-      - srv02
-      - srv03
-      - srv04
-      - srv05
-      - srv06
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./report:/usr/share/nginx/html/report
-    networks:
-      - k6
-    ports:
-      - "8088:80"

@@ -15,9 +15,9 @@ services:
     working_dir: /app
     environment:
       - K6_WEB_DASHBOARD=true
-      - K6_WEB_DASHBOARD_EXPORT=html-report.html
     volumes:
       - ./scripts:/app
+      - ./report:/report
     ports:
       - "6565:6565"
       - "5665:5665"

@@ -66,3 +66,7 @@ k6test:
 
 
 
+k6run:
+	docker compose run \
+	-e K6_WEB_DASHBOARD_EXPORT=/report/$(script)-report-$$(date +%Y%m%d%H%M%S).html  \
+	--rm k6 run $(script).js

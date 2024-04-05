@@ -3,7 +3,7 @@ import { sleep } from 'k6';
 
 export const options = {
   stages: [
-    { duration: '10s', target: 3 }
+    { duration: '5s', target: 1 }
   ],
 };
 
@@ -13,6 +13,6 @@ export const options = {
 // about authoring k6 scripts.
 //
 export default function() {
-  http.get('http://app-srv01:3000/mock15mb');
+  http.get('http://k6testapi:8000');
   //sleep(1);
 }

@@ -1,6 +1,7 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
-
+const TEST_URL = 'http://localhost:3001/hello';
+//const TEST_URL = `https://banana-shop-ta-twan.pea-workshops.odd.works/api/products`;
 export const options = {
   scenarios: {
     soak: {

@@ -8,6 +8,8 @@ pull:
 	docker compose pull
 
 
+start-srv:
+	docker compose up -d srv01 
 # k6:
 # 	docker compose run k6 run --vus 1 --duration 30s /scripts/basic.js
 
